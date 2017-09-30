@@ -1,0 +1,4 @@
+texlive
+mysql
+python
+shadowsocks
