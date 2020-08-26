@@ -14,3 +14,11 @@ _book
 *.epub
 *.mobi
 *.pdf
+
+# tex&Latex output
+*.log
+*.aux
+*.out
+
+#Emacs backup files & temprarily files
+*~
