@@ -1,0 +1,21 @@
+\documentclass[usenames,dvipsnames]{standalone}
+
+\usepackage{tikz}
+\usetikzlibrary{graphs,quotes,arrows.meta}
+
+\begin{document}
+\begin{tikzpicture}
+	\definecolor{irongray}{RGB}{11,23,70} 
+	
+	\draw[irongray,fill=irongray](5,5) circle (10);
+	\draw[irongray,fill=white](5,5) circle (8);
+	
+\draw[irongray,fill=irongray](0,0)--(2,0)--(2,4)--(4,4)--(4,0)--(6,0)
+	--(6,4)--(8,4)--(8,0)--(10,0)--(10,10)
+	--(8,10)--(8,6)--(6,6)--(6,10)--(4,10)
+	%--(4,6)--(2,6)--(2,10)
+	--(0,10)--cycle;
+	\draw [irongray,fill=white](4,6)--(2,6)--(2,8)--(4,8)--cycle;
+
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,262 @@
+* VPN登录相关信息
+EDJVS6HNH4JLE75EURR8W3O
+* 操作系统配置
+** 能够联网之后需要更新源
+直接GUI界面选择软件包管理器地区选为China即可
+    如有必要可注释掉网易等源,越在上的源优先级越高
+    /etc/pacman.conf  或者    /etc/pacman.d/mirrorlist
+
+或者使用如下命令：
+sudo pacman-mirrors -i -c China -m rank
+sudo pacman -Syy  将本地的软件与软件仓库进行同步
+sudo pacman -S archlinuxcn-keyring  来更新下archlinux 签名 
+
+** 操作系统的更新：包管理器pacman的使用
+pacman -Syu :   一条命令即可对整个系统进行更新
+pacman -Sy  :   将本地的包数据库与源进行了同步
+pacman -Su  :   更新系统
+pacman -S package：可以同时安装多个包,只需以空格分隔包名即可
+pacman -Sy package：与上面命令不同的是,该命令将在同步包数据库后再执行安装
+pacman -Sv package：在显示一些操作信息后执行安装
+pacman -U：安装本地包，其扩展名为 pkg.tar.gz
+pacman -U http://www.example.com/repo/example.pkg.tar.xz 安装不在源的远程包
+pacman -R package：只删除包,保留其全部已经安装的依赖关系
+pacman -Rs package：在删除包的同时,删除所有没有被其他已安装软件使用的依赖关系
+pacman -Rsc package：在删除包的同时,删除所有依赖这个软件包的程序
+pacman -Rd package：在删除包时不检查依赖
+pacman -Ss 关键字：在仓库中搜索含关键字的包
+pacman -Qs 关键字： 搜索已安装的包
+pacman -Qi package：查看有关包的详尽信息
+pacman -Ql package：列出该包的文件
+pacman -Sw package：只下载包,不安装
+pacman -Sc：清理未安装的包文件,包文件位于 /var/cache/pacman/pkg/ 目录。
+pacman -Scc：清理所有的缓存文件。
+
+** 安装XFCE桌面环境及卸载
+sudo pacman -S xfce4 xfce4-goodies manjaro-xfce-settings
+sudo pacman -Rsun xfce4 xfce4-goodies manjaro-xfce-settings
+
+** pacman替代命令yay[该选项有待进一步测试后使用]    :待测试：
+sudo pacman -S yay
+yay 的命令参数跟pacman参数基本一致
+
+** 有些OFFICE常用的软件
+sudo pacman -S fcitx-googlepinyin   Google拼音输入法
+sudo pacman -S fcitx-rime           Rime输入法
+    安装完Rime输入法之后默认是繁体中文状态，转换为简体中文输入法状态有两种方法：
+    方法一：临时转换按F4键，需要在每次启动时转换。
+    方法二：修改配置文件，不需要手动转换
+    修改文件位于：~/.config/fcitx/rime/build/luna_pinyin.schema.yaml
+    文件最后的内容为：其中name:simplication 为简体中文，需要在此设置
+        switches:
+          - name: ascii_mode
+            reset: 0
+            states: ["中文", "西文"]
+          - name: full_shape
+            states: ["半角", "全角"]
+          - name: simplification
+            states: ["漢字", "汉字"]
+          - name: ascii_punct
+            states: ["。，", "．，"]
+sudo pacman -S deepin.com.qq.office 安装QQ或者TIM
+sudo pacman -S electronic-wechat    安装微信
+sudo pacman -S baidunetdisk-bin 安装百度网盘 
+sudo pacman -S deepin-wine-thunderspeed 安装迅雷极速版 
+sudo pacman -S visual-studio-code-bin   安装VisualStudioCode 
+sudo pacman -S pycharm-professional 安装Pycharm Professional 
+sudo pacman -S netease-cloud-music  安装网易云音乐 
+sudo pacman -S deepin-screenshot　安装深度截图
+sudo pacman -S deepin-draw  安装深度画板
+sudo pacman -S deepin-screen-recorder   安装深度录屏 
+sudo pacman -S anaconda
+    安装完成后实现在打开命令行模式时，在提示符前端显示(base)：
+    编辑～/.bashrc文件，在最后添加
+        source /opt/anaconda/bin/activate root
+    然后重新载入该文件即可 source .bashrc
+sudo pacman -S psensor  硬件温度监测
+sudo pacman -S wps-office
+sudo pacman -S ttf-wps-fonts
+
+** 修改Home下目录
+sudo vim ~/.config/user-dirs.dirs
+修改的内容如下：
+    XDG_DESKTOP_DIR="$HOME/Desktop"
+    XDG_DOWNLOAD_DIR="$HOME/Download"
+    XDG_TEMPLATES_DIR="$HOME/Templates"
+    XDG_PUBLICSHARE_DIR="$HOME/Public"
+    XDG_DOCUMENTS_DIR="$HOME/Documents"
+    XDG_MUSIC_DIR="$HOME/Music"
+    XDG_PICTURES_DIR="$HOME/Pictures"
+    XDG_VIDEOS_DIR="$HOME/Videos"
+再修改文件名
+    cd ~
+    mv 公共 Public
+    mv 模板 Templates
+    mv 视频 Videos
+    mv 图片 Pictures
+    mv 文档 Documents
+    mv 下载 Download
+    mv 音乐 Music
+    mv 桌面 Desktop
+    
+** 安装输入法[该选项有待进一步测试后使用]    :待测试：
+
+安装搜狗输入之前要将系统源切换好
+sudo pacman -S fcitx fcitx-im fcitx-configtool fcitx-sogoupinyin
+添加输入法配置 sudo vim ~/.xprofile
+配置如下：
+    export GTK_IM_MODULE=fcitx
+    export QT_IM_MODULE=fcitx
+    export XMODIFIERS="@im=fcitx"
+
+** 卸载GNOME后无法联网
+网上有提到需要使用 wpa_supplicant 来联网
+
+** 常用命令
+uname -romi 显示操作系统内核版本等
+lsb_release -a  显示操作系统发行版
+screenfetch 显示操作系统发行版图标,安装硬件等信息
+neofetch 同上
+** 设置系统时间自动同步
+timedatectl (status) 【systemd中的命令】
+显示如下:
+    Local time:     五 2018-10-12 23:35:49 CST       #本地时间
+    Universal time: 五 2018-10-12 15:35:49 UTC       #UTC时间
+    RTC time:       五 2018-10-12 15:35:49           #硬件时间，hwclock一样
+    Time zone:      Asia/Shanghai (CST,+0800)        #时区
+System clock synchronized: yes                       #系统时间同步
+    NTP service: active                              #NTP时间同步
+    RTC in local TZ: no                              #同步硬件是为本地时间
+如果系统时间同步为no NTP service为inactive需要输入如下命令
+timedatectl set-ntp yes
+双系统中windows的设置需要将系统的时间设置为UTC：
+将以下的文本输入到Time_sync.reg中，双击注入注册表
+
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation]
+
+"RealTimeIsUniversal"=dword:00000001
+
+** manjaro
+配置中国的 mirrors，在 终端 执行下面的命令从官方的源列表中对中国源进行测速和设置：
+
+sudo pacman-mirrors -g  # 排列源，可不执行
+sudo pacman-mirrors -c China -m rank # 更改源，在跳出的对话框里选择想要的源
+
+为 Manjaro 增加中文社区的源来加速安装软件，在 /etc/pacman.conf 中添加 archlinuxcn 源，末尾加上：
+
+[archlinuxcn]
+SigLevel = Optional TrustedOnly
+Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
+
+安装 archlinuxcn-keyring 包以导入 GPG key，否则的话 key 验证失败会无法安装：
+
+sudo pacman -S archlinuxcn-keyring
+
+同步并更新系统：
+
+sudo pacman -Syyu
+
+输入法
+
+fcitx 是 Free Chinese Input Toy for X 的缩写，国内也常称作小企鹅输入法，是一款 Linux 下的中文输入法:
+
+sudo pacman -S fcitx-googlepinyin
+sudo pacman -S fcitx-im # 选择全部安装
+sudo pacman -S fcitx-configtool # 安装图形化配置工具
+sudo pacman -S fcitx-skin-material
+
+解决中文输入法无法切换问题: 添加文件 ~/.xprofile：
+
+export GTK_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS="@im=fcitx"
+
+    输入法需要重启生效
+
+pacman
+
+sudo pacman -S 软件名　# 安装
+sudo pacman -R 软件名　# 删除单个软件包，保留其全部已经安装的依赖关系
+sudo pacman -Rs 软件名 # 除指定软件包，及其所有没有被其他已安装软件包使用的依赖关系
+sudo pacman -Ss 软件名  # 查找软件
+sudo pacman -Sc # 清空并且下载新数据
+sudo pacman -Syu　# 升级所有软件包
+sudo pacman -Qs # 搜索已安装的包
+
+* ZSH
+
+wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
+sudo pacman -S autojump
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+* ss
+
+sudo pacman -S shadowsocks-qt5
+安装了一个 ss 的客户端，编辑添加好帐号之后，还需要设置一下端口转发设置之后，浏览器访问才 OK：
+
+sudo pacman -S privoxy # 安装代理转发，用于将 socks5 代理转换为 http 代理
+sudo bash -c 'echo "forward-socks5 / 127.0.0.1:1080 ." >> /etc/privoxy/config'
+git config --global http.proxy 'socks5://127.0.0.1:1080'
+git config --global https.proxy 'socks5://127.0.0.1:1080'
+sudo systemctl start privoxy.service
+
+接着，你还需要去设置网络代理：系统设置-》网络-》设置-》代理，socks代理 那里进行配置 127.0.0.1:1080。
+
+{% note warning %}
+很多网上的教程都说需要再安装一个 switchyomega 插件，事实上，最新版本的 Chrome 已经不支持直接拖动 crx 文件安装插件了。
+{% endnote %}
+
+这时候浏览器网络其实已经 OK 了，访问 Google 也正常。你会发现访问国内网站速度并不好，这是因为国内网站不走代理其实网速更好！这时候实现自动的切换，就可以在上面的设置之后，去 Google 应用商店安装好 proxy-switchyomega 扩展。
+
+进行设置主要有 3 点：
+
+    情景模式中，proxy 配置上 socks5 的代理；情景模式中，auto switch 中，首先勾选上 规则列表表规则 走 proxy！规则列表设置，在 autoproxy 中，输入规则类表网址：https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt，然后更新，这样在规则列表中的网站就会走上面的代理了；
+
+
+安装中文字体
+
+为啥会突出一下要安装中欧给你问字体呢，因为我使用过程发现系统里的中文字变成了一个个小白方框的格子，安装好中文字体并重启后，就显示正常了：
+
+sudo pacman -S wqy-zenhei
+sudo pacman -S wqy-bitmapfont
+sudo pacman -S wqy-microhei
+sudo pacman -S ttf-wps-fonts
+sudo pacman -S adobe-source-han-sans-cn-fonts
+sudo pacman -S adobe-source-han-serif-cn-fonts
+
+
+sudo pacman -S albert 
+* Tmux
+A Ctrl+B Cheat Sheet
+
+We’ve included a cheat sheet of the different commands you can use in tmux below.
+Session Commands
+
+    S: List sessions.
+    $: Rename current session.
+    D: Detach current session.
+    Ctrl+B, and then ?: Display Help page in tmux.
+
+Window Commands
+
+    C: Create a new window.
+    ,: Rename the current window.
+    W: List the windows.
+    N: Move to the next window.
+    P: Move to the previous window.
+    0 to 9: Move to the window number specified.
+
+Pane Commands
+
+    %: Create a horizontal split.
+    “: Create a vertical split.
+    H or Left Arrow: Move to the pane on the left.
+    I or Right Arrow: Move to the pane on the right.
+    J or Down Arrow: Move to the pane below.
+    K or Up Arrow: Move to the pane above.
+    Q: Briefly show pane numbers.
+    O: Move through panes in order. Each press takes you to the next, until you loop through all of them.
+    }: Swap the position of the current pane with the next.
+    {: Swap the position of the current pane with the previous.
+    X: Close the current pane.
